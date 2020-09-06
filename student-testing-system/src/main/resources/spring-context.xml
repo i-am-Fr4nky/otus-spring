@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="studentService" class="ru.otus.iamfranky.homework.service.StudentServiceImpl"/>
+
+    <bean id="questionDao" class="ru.otus.iamfranky.homework.dao.QuestionDaoCSV">
+        <constructor-arg name="fileName" value="question-source.csv"/>
+    </bean>
+
+    <bean id="answersService" class="ru.otus.iamfranky.homework.service.AnswersServiceImpl">
+        <constructor-arg name="questionDao" ref="questionDao"/>
+    </bean>
+
+    <bean id="examService" class="ru.otus.iamfranky.homework.service.ExamServiceLimitBased">
+        <constructor-arg name="answersService" ref="answersService"/>
+        <constructor-arg name="answerLimit" value="2"/>
+    </bean>
+
+</beans>
