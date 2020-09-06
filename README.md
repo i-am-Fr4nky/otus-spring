@@ -1,1 +1,1 @@
-# otus-spring
+# Репозиторий домашних заданий курса OTUS: "Разработчик Spring Framework"
