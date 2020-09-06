@@ -15,7 +15,7 @@ public class ExamServiceLimitBased implements ExamService {
 
     public boolean isSuccess(List<Answer> answers) {
         var correct = answers.stream()
-                .filter(a -> a.getAnswer().equals(a.getCorrectAnswer()))
+                .filter(a -> a.getAnswer().equalsIgnoreCase(a.getCorrectAnswer()))
                 .collect(Collectors.toList());
         return correct.size() >= answerLimit;
     }
