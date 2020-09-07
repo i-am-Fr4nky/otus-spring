@@ -14,7 +14,6 @@ import static org.mockito.Mockito.when;
 
 public class ExamServiceLimitBasedTest {
 
-    @Mock
     private final AnswersService answersService = mock(AnswersService.class);
 
     private ExamService examService;
