@@ -1,4 +1,4 @@
-package ru.otus.iamfranky.homework.service;
+package ru.otus.iamfranky.homework.service.student;
 
 import ru.otus.iamfranky.homework.domain.Student;
 

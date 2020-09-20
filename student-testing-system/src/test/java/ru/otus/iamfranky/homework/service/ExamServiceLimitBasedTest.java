@@ -2,19 +2,23 @@ package ru.otus.iamfranky.homework.service;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 import ru.otus.iamfranky.homework.domain.Answer;
+import ru.otus.iamfranky.homework.domain.Student;
+import ru.otus.iamfranky.homework.service.answers.AnswersService;
+import ru.otus.iamfranky.homework.service.exam.ExamService;
+import ru.otus.iamfranky.homework.service.exam.ExamServiceLimitBased;
+import ru.otus.iamfranky.homework.service.ui.UIService;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class ExamServiceLimitBasedTest {
 
     private final AnswersService answersService = mock(AnswersService.class);
+    private final UIService uiService = mock(UIService.class);
 
     private ExamService examService;
 
@@ -22,13 +26,14 @@ public class ExamServiceLimitBasedTest {
 
     @Before
     public void before() {
-        this.examService = new ExamServiceLimitBased(answerLimit, answersService);
+        this.examService = new ExamServiceLimitBased(answerLimit, answersService, uiService);
     }
 
     @Test
     public void shouldSuccessExam() throws Exception {
 
         // Given
+        var student = new Student("name", "surname");
         var answers = List.of(
                 new Answer("text", "answer", "answer"),
                 new Answer("text", "answer", "answer"),
@@ -36,17 +41,19 @@ public class ExamServiceLimitBasedTest {
         );
 
         // When
-        when(answersService.getAnswers(any())).thenReturn(answers);
-        var result = examService.exam(any());
+        when(answersService.getAnswers(student)).thenReturn(answers);
+        doNothing().when(uiService).inform(any());
+        var result = examService.exam(student);
 
         // Then
-        assertEquals(Boolean.TRUE, result);
+        assertTrue(result);
     }
 
     @Test
     public void shouldFailedExam() throws Exception {
 
         // Given
+        var student = new Student("name", "surname");
         var answers = List.of(
                 new Answer("text", "answer", "answer"),
                 new Answer("text", "correctAnswer", "answer"),
@@ -54,11 +61,12 @@ public class ExamServiceLimitBasedTest {
         );
 
         // When
-        when(answersService.getAnswers(any())).thenReturn(answers);
-        var result = examService.exam(any());
+        when(answersService.getAnswers(student)).thenReturn(answers);
+        doNothing().when(uiService).inform(any());
+        var result = examService.exam(student);
 
         // Then
-        assertEquals(Boolean.FALSE, result);
+        assertFalse(result);
     }
 
 }
