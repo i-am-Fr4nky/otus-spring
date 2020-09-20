@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="questionDao" class="ru.otus.iamfranky.homework.dao.QuestionDaoCSV">
+        <constructor-arg name="fileName" value="question-source.csv"/>
+    </bean>
+
+    <bean id="uiService" class="ru.otus.iamfranky.homework.service.ui.ConsoleBasedUIService"/>
+
+    <bean id="studentService" class="ru.otus.iamfranky.homework.service.student.StudentServiceImpl">
+        <constructor-arg ref="uiService"/>
+    </bean>
+
+    <bean id="answersService" class="ru.otus.iamfranky.homework.service.answers.AnswersServiceImpl">
+        <constructor-arg name="questionDao" ref="questionDao"/>
+        <constructor-arg name="uiService" ref="uiService"/>
+    </bean>
+
+    <bean id="examService" class="ru.otus.iamfranky.homework.service.exam.ExamServiceLimitBased">
+        <constructor-arg name="answerLimit" value="2"/>
+        <constructor-arg name="answersService" ref="answersService"/>
+        <constructor-arg name="uiService" ref="uiService"/>
+    </bean>
+
+    <bean id="examRunner" class="ru.otus.iamfranky.homework.service.exam.ExamRunner">
+        <constructor-arg name="studentService" ref="studentService"/>
+        <constructor-arg name="examService" ref="examService"/>
+        <constructor-arg name="uiService" ref="uiService"/>
+    </bean>
+
+</beans>
