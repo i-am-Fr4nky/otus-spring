@@ -1,6 +1,7 @@
 package ru.otus.iamfranky.homework.service.answers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import ru.otus.iamfranky.homework.dao.QuestionDao;
 import ru.otus.iamfranky.homework.domain.Answer;
 import ru.otus.iamfranky.homework.domain.Student;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+@Service
 @RequiredArgsConstructor
 public class AnswersServiceImpl implements AnswersService {
 

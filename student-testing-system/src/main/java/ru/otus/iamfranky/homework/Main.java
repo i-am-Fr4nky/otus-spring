@@ -1,26 +1,17 @@
 package ru.otus.iamfranky.homework;
 
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import ru.otus.iamfranky.homework.service.exam.ExamRunner;
 
+@Configuration
+@ComponentScan
 public class Main {
 
-    public static final String CONTEXT_PATH = "/spring-context.xml";
-
     public static void main(String[] args) {
-
-        ClassPathXmlApplicationContext context = null;
-
-        try {
-            context = new ClassPathXmlApplicationContext(CONTEXT_PATH);
-
-            var examRunner = context.getBean(ExamRunner.class);
-            examRunner.run();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            context.close();
-        }
+        var context = new AnnotationConfigApplicationContext(Main.class);
+        var examRunner = context.getBean(ExamRunner.class);
+        examRunner.run();
     }
 }

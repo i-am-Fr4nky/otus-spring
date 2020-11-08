@@ -1,8 +1,10 @@
 package ru.otus.iamfranky.homework.domain;
 
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public class Answer extends Question {
 
     private final String answer;
