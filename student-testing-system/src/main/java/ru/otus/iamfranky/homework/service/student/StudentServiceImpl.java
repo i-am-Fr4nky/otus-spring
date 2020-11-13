@@ -1,9 +1,11 @@
 package ru.otus.iamfranky.homework.service.student;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import ru.otus.iamfranky.homework.domain.Student;
 import ru.otus.iamfranky.homework.service.ui.UIService;
 
+@Service
 @RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService {
 
