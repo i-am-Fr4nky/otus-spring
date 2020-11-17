@@ -1,4 +1,4 @@
-package ru.otus.iamfranky.homework.sts.sb.config;
+package ru.otus.iamfranky.homework.sts.sb.properties;
 
 import lombok.Getter;
 import lombok.Setter;

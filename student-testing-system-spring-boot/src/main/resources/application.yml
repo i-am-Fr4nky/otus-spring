@@ -2,8 +2,14 @@ student:
   testing:
     system:
       answer.limit: 1
-      csv.file: question-source_ru_RU.csv
+      resource.file:
+        path: question-source_ru_RU.csv
+        delimiter: ','
       localization:
-        locale: ru_RU
-        encoding: UTF-8
-        bundle.path: /i18n/bundle
+        locale: ru
+
+spring:
+  messages:
+    basename: i18n/bundle
+    encoding: UTF-8
+

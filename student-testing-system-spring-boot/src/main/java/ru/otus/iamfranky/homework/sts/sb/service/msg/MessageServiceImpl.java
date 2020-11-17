@@ -1,12 +1,14 @@
 package ru.otus.iamfranky.homework.sts.sb.service.msg;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
-import ru.otus.iamfranky.homework.sts.sb.config.LocalizationProperties;
+import ru.otus.iamfranky.homework.sts.sb.properties.LocalizationProperties;
 
 @Service
 @RequiredArgsConstructor
+@EnableConfigurationProperties(LocalizationProperties.class)
 public class MessageServiceImpl implements MessageService {
 
     private final MessageSource messageSource;
@@ -18,12 +20,8 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public String getMsg(String propertyPath, Object param) {
-        return messageSource.getMessage(propertyPath, new Object[]{param}, localizationProperties.getLocale());
+    public String getMsg(String propertyPath, Object... param) {
+        return messageSource.getMessage(propertyPath, param, localizationProperties.getLocale());
     }
 
-    @Override
-    public String getMsg(String propertyPath, Object[] params) {
-        return messageSource.getMessage(propertyPath, params, localizationProperties.getLocale());
-    }
 }
