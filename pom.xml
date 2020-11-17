@@ -6,10 +6,12 @@
 
     <groupId>ru.otus.iamfranky.homework</groupId>
     <artifactId>otus-spring</artifactId>
+    <packaging>pom</packaging>
     <version>1.0</version>
 
     <modules>
         <module>student-testing-system</module>
+        <module>student-testing-system-shell</module>
     </modules>
 
     <dependencies>
