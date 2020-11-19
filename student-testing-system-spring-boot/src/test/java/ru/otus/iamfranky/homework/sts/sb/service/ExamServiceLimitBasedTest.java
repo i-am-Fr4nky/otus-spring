@@ -2,15 +2,15 @@ package ru.otus.iamfranky.homework.sts.sb.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.iamfranky.homework.sts.sb.domain.Answer;
 import ru.otus.iamfranky.homework.sts.sb.domain.Student;
+import ru.otus.iamfranky.homework.sts.sb.properties.AnswerProperties;
 import ru.otus.iamfranky.homework.sts.sb.service.answers.AnswersService;
 import ru.otus.iamfranky.homework.sts.sb.service.exam.ExamService;
-import ru.otus.iamfranky.homework.sts.sb.service.exam.ExamServiceLimitBased;
-import ru.otus.iamfranky.homework.sts.sb.service.msg.MessageService;
 import ru.otus.iamfranky.homework.sts.sb.service.ui.UIService;
 
 import java.util.ArrayList;
@@ -26,15 +26,16 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 public class ExamServiceLimitBasedTest {
 
-    @Mock
+    @MockBean
     private AnswersService answersService;
 
-    @Mock
+    @MockBean
     private UIService uiService;
 
-    @Mock
-    private MessageService messageService;
+    @MockBean
+    private AnswerProperties answerProperties;
 
+    @Autowired
     private ExamService examService;
 
     @Value("${student.testing.system.answer.limit}")
@@ -47,11 +48,16 @@ public class ExamServiceLimitBasedTest {
 
     @BeforeEach
     void before() throws RuntimeException {
-        this.examService = new ExamServiceLimitBased(answerLimit, answersService, uiService, messageService);
-        if (allAnswer == 0 && answerLimit == 0)
+
+        // check test parameters
+         if (allAnswer == 0 && answerLimit == 0)
             throw new RuntimeException("Values of answer limit and answers size are 0. Please, check test property.");
         if (allAnswer < answerLimit)
             throw new RuntimeException("Answer limit is biggest that all answers size. Please, check test property.");
+
+        // mock commons functionality
+        when(answerProperties.getLimit()).thenReturn(answerLimit);
+        doNothing().when(uiService).inform(any());
     }
 
     @Test
@@ -62,10 +68,9 @@ public class ExamServiceLimitBasedTest {
             addAll(getAnswers(answerLimit, true));
             addAll(getAnswers(allAnswer - answerLimit, false));
         }};
-
+;
         // When
         when(answersService.getAnswers(student)).thenReturn(answers);
-        doNothing().when(uiService).inform(any());
         var result = examService.exam(student);
 
         // Then
@@ -84,7 +89,6 @@ public class ExamServiceLimitBasedTest {
 
         // When
         when(answersService.getAnswers(student)).thenReturn(answers);
-        doNothing().when(uiService).inform(any());
         var result = examService.exam(student);
 
         // Then

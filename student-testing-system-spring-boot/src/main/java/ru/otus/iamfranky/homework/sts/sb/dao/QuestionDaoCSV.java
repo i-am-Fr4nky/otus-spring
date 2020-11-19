@@ -1,38 +1,35 @@
 package ru.otus.iamfranky.homework.sts.sb.dao;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Repository;
 import ru.otus.iamfranky.homework.sts.sb.domain.Question;
 import ru.otus.iamfranky.homework.sts.sb.exception.QuestionsReadingException;
+import ru.otus.iamfranky.homework.sts.sb.properties.ResourceFileProperties;
 
 import java.io.BufferedReader;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
+@RequiredArgsConstructor
+@EnableConfigurationProperties(ResourceFileProperties.class)
 public class QuestionDaoCSV implements QuestionDao {
 
-    private static final String COMMA_DELIMITER = ",";
-    private final String fileName;
-
-    @Autowired
-    public QuestionDaoCSV(@Value("${student.testing.system.csv.file:null}") String fileName) {
-        this.fileName = fileName;
-    }
+    private final ResourceFileProperties resourceProperties;
 
     @Override
     public List<Question> findQuestion() throws QuestionsReadingException {
         var result = new ArrayList<Question>();
 
-        try (InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
-             BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
+        try (var inputStream = Thread.currentThread().getContextClassLoader()
+                .getResourceAsStream(resourceProperties.getPath());
+             var br = new BufferedReader(new InputStreamReader(inputStream))) {
 
             var line = new String();
             while ((line = br.readLine()) != null) {
-                var attributes = line.split(COMMA_DELIMITER);
+                var attributes = line.split(resourceProperties.getDelimiter());
                 result.add(new Question(attributes[0], attributes[1]));
             }
             return result;
