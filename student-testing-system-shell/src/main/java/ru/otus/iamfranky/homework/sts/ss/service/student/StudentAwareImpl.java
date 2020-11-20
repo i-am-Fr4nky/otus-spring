@@ -5,24 +5,22 @@ import org.springframework.stereotype.Component;
 import ru.otus.iamfranky.homework.sts.sb.domain.Student;
 import ru.otus.iamfranky.homework.sts.ss.exception.StudentNotSpecifiedException;
 
+import java.util.Optional;
+
 @Slf4j
 @Component
 public class StudentAwareImpl implements StudentAware {
 
-    private Student student;
+    private Optional<Student> student;
 
     @Override
     public void setStudent(Student student) {
-        this.student = student;
-        log.info("Current student set as: {}", student);
+        this.student = Optional.of(student);
+        log.debug("Current student set as: {}", student);
     }
 
     @Override
     public Student getStudent() throws StudentNotSpecifiedException {
-
-        if (student == null)
-            throw new StudentNotSpecifiedException();
-
-        return student;
+        return student.orElseThrow(() -> new StudentNotSpecifiedException());
     }
 }
