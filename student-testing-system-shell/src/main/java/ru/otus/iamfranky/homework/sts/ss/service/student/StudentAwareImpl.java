@@ -11,7 +11,7 @@ import java.util.Optional;
 @Component
 public class StudentAwareImpl implements StudentAware {
 
-    private Optional<Student> student;
+    private Optional<Student> student = Optional.empty();
 
     @Override
     public void setStudent(Student student) {

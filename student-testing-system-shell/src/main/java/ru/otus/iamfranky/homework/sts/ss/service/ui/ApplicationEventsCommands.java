@@ -1,56 +1,59 @@
 package ru.otus.iamfranky.homework.sts.ss.service.ui;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import ru.otus.iamfranky.homework.sts.sb.domain.Student;
-import ru.otus.iamfranky.homework.sts.sb.exception.QuestionsReadingException;
-import ru.otus.iamfranky.homework.sts.sb.properties.LocalizationProperties;
+import ru.otus.iamfranky.homework.sts.sb.service.exam.ExamMsgPaths;
 import ru.otus.iamfranky.homework.sts.sb.service.exam.ExamService;
+import ru.otus.iamfranky.homework.sts.sb.service.msg.MessageService;
 import ru.otus.iamfranky.homework.sts.ss.exception.StudentNotSpecifiedException;
+import ru.otus.iamfranky.homework.sts.ss.service.lang.LanguageService;
 import ru.otus.iamfranky.homework.sts.ss.service.student.StudentAware;
 
 import java.util.Locale;
 
+@Slf4j
 @ShellComponent
 @RequiredArgsConstructor
-@EnableConfigurationProperties(LocalizationProperties.class)
-public class ApplicationEventsCommands {
+public class ApplicationEventsCommands implements ExamMsgPaths, ApplicationMsgPaths {
 
     private final StudentAware studentAware;
-    private final LocalizationProperties localizationProperties;
+    private final LanguageService languageService;
     private final ExamService examService;
+    private final MessageService messageService;
+
 
     @ShellMethod(value = "Login or change user", key = {"login", "l"})
     public String login(@ShellOption String name, @ShellOption String surname) {
         studentAware.setStudent(new Student(name, surname));
-        return String.format("Добро пожаловать: %s, %s", name, surname);
+        return messageService.getMsg(WELCOME_MSG, name, surname);
     }
 
-    @ShellMethod(value = "Change language.", key = {"language", "lang"})
-    public String changeLanguage(@ShellOption(defaultValue = "en") String locale) { // TODO use enum
-        var loc = new Locale(locale);
-        localizationProperties.setLocale(loc);
-        return String.format("Locale changed: %s", loc);
+    @ShellMethod(value = "Switch language.", key = {"language", "lang"})
+    public String switchLanguage(@ShellOption(defaultValue = "en") String languageCode) {
+        try {
+            var locale = new Locale(languageCode);
+            languageService.switchLanguage(locale);
+            return messageService.getMsg(LOCALE_MSG, locale);
+        } catch (Exception e) {
+            return messageService.getMsg(ERROR_MSG, e.getLocalizedMessage());
+        }
     }
 
     @ShellMethod(value = "Start exam.", key = {"exam"})
     public String startExam() {
         try {
             var result = examService.exam(studentAware.getStudent());
-            return result ? "Поздравляем с умпешной сдачей экзамена" :
-                    "Попробуйте в другой раз";
-        } catch (QuestionsReadingException e) {
-            e.printStackTrace();
-            return "Ошибка при чтении файла:" + e.getMessage();
+            return result ? messageService.getMsg(SUCCESS_MSG) : messageService.getMsg(FAILED_MSG);
         } catch (StudentNotSpecifiedException e) {
-            e.printStackTrace();
-            return "Ошибка. Необходимо залогиниться.";
+            log.debug(e.getMessage() , e);
+            return messageService.getMsg(NOT_LOGIN_MSG);
         } catch (Exception e) {
-            e.printStackTrace();
-            return "Ошибка. " + e.getLocalizedMessage();
+            log.error(e.getMessage(), e);
+            return messageService.getMsg(ERROR_MSG, e.getMessage());
         }
     }
 

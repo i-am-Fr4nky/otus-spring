@@ -1,0 +1,18 @@
+student:
+  testing:
+    system:
+      answer.limit: 5
+      resource.file.delimiter: ','
+      localization:
+        def: ru
+        languages:
+          - locale: ru
+            file: question-source_ru_RU.csv
+          - locale: en
+            file: question-source.csv
+
+spring:
+  messages:
+    basename: i18n/bundle
+    encoding: UTF-8
+

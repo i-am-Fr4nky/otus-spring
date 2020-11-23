@@ -8,12 +8,7 @@ import ru.otus.iamfranky.homework.sts.sb.service.ui.UIService;
 
 @Component
 @RequiredArgsConstructor
-public class ExamRunnerImpl implements ExamRunner {
-
-    private static final String START_MSG = "sts.sb.msg.app.start";
-    private static final String ERROR_MSG = "sts.sb.msg.app.error";
-    private static final String SUCCESS_MSG = "sts.sb.msg.app.end.success";
-    private static final String FAILED_MSG = "sts.sb.msg.app.end.fail";
+public class ExamRunnerImpl implements ExamRunner, ExamMsgPaths {
 
     private final StudentService studentService;
     private final ExamService examService;
