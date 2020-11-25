@@ -16,6 +16,7 @@ public class ExamRunnerImpl implements ExamRunner, ExamMsgPaths {
     private final MessageService messageService;
 
     public void run() {
+
         try {
             uiService.inform(messageService.getMsg(START_MSG));
 
@@ -25,8 +26,8 @@ public class ExamRunnerImpl implements ExamRunner, ExamMsgPaths {
             uiService.inform(msg);
 
         } catch (Exception e) {
-            uiService.inform(messageService.getMsg(ERROR_MSG, e.getMessage()));
             e.printStackTrace();
+            uiService.inform(messageService.getMsg(ERROR_MSG, e.getMessage()));
         }
     }
 
