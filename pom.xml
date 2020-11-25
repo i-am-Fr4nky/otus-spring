@@ -12,6 +12,7 @@
     <modules>
         <module>student-testing-system</module>
         <module>student-testing-system-shell</module>
+        <module>books-dao-jdbc</module>
     </modules>
 
     <dependencies>
