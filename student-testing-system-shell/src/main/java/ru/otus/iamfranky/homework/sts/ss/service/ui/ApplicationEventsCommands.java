@@ -2,14 +2,15 @@ package ru.otus.iamfranky.homework.sts.ss.service.ui;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
+import org.springframework.shell.standard.ShellMethodAvailability;
 import org.springframework.shell.standard.ShellOption;
 import ru.otus.iamfranky.homework.sts.sb.domain.Student;
 import ru.otus.iamfranky.homework.sts.sb.service.exam.ExamMsgPaths;
 import ru.otus.iamfranky.homework.sts.sb.service.exam.ExamService;
 import ru.otus.iamfranky.homework.sts.sb.service.msg.MessageService;
-import ru.otus.iamfranky.homework.sts.ss.exception.StudentNotSpecifiedException;
 import ru.otus.iamfranky.homework.sts.ss.service.lang.LanguageService;
 import ru.otus.iamfranky.homework.sts.ss.service.student.StudentAware;
 
@@ -44,17 +45,19 @@ public class ApplicationEventsCommands implements ExamMsgPaths, ApplicationMsgPa
     }
 
     @ShellMethod(value = "Start exam.", key = {"exam"})
+    @ShellMethodAvailability(value = "isUserLogin")
     public String startExam() {
         try {
             var result = examService.exam(studentAware.getStudent());
             return result ? messageService.getMsg(SUCCESS_MSG) : messageService.getMsg(FAILED_MSG);
-        } catch (StudentNotSpecifiedException e) {
-            log.debug(e.getMessage() , e);
-            return messageService.getMsg(NOT_LOGIN_MSG);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             return messageService.getMsg(ERROR_MSG, e.getMessage());
         }
     }
 
+    private Availability isUserLogin() {
+        return studentAware.isPresent() ? Availability.available() :
+                Availability.unavailable(messageService.getMsg(NOT_LOGIN_MSG));
+    }
 }

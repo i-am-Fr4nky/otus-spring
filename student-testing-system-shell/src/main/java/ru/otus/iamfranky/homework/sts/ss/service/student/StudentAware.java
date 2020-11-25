@@ -7,4 +7,5 @@ public interface StudentAware {
 
     void setStudent(Student student);
     Student getStudent() throws StudentNotSpecifiedException;
+    boolean isPresent();
 }

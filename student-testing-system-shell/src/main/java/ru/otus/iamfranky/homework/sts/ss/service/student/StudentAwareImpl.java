@@ -23,4 +23,10 @@ public class StudentAwareImpl implements StudentAware {
     public Student getStudent() throws StudentNotSpecifiedException {
         return student.orElseThrow(() -> new StudentNotSpecifiedException());
     }
+
+    @Override
+    public boolean isPresent() {
+        return student.isPresent();
+    }
+
 }
