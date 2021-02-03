@@ -23,7 +23,11 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> getAll() throws BookNotFoundException {
         try {
-            return booksDao.getAll();
+            var books = booksDao.getAll();
+            if (books.size() == 0) {
+                throw new BookNotFoundException();
+            }
+            return books;
         } catch (Exception e) {
             log.error("Get all error", e);
             throw e;
@@ -43,7 +47,11 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book get(int id) throws BookNotFoundException {
         try {
-            return booksDao.get(id);
+            var book = booksDao.get(id);
+            if (book != null) {
+                throw new BookNotFoundException(id); // TODO test exception
+            }
+            return book;
         } catch (Exception e) {
             log.error("Get by id error", e);
             throw e;
@@ -61,9 +69,9 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book add(int authorId, int genreId, String name, String desc, int[] genreIds) {
+    public Book add(int authorId, String name, String desc, int[] genreIds) {
         try {
-            var book = toBook(authorId, genreId, name, desc, genreIds);
+            var book = toBook(authorId, name, desc, genreIds);
             return booksDao.insert(book);
         } catch (Exception e) {
             log.error("Add error", e);
@@ -72,9 +80,9 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void update(int id, int authorId, int genreId, String name, String desc, int[] genreIds) {
+    public void update(int id, int authorId, String name, String desc, int[] genreIds) {
         try {
-            var book = toBook(authorId, genreId, name, desc, genreIds);
+            var book = toBook(authorId, name, desc, genreIds);
             book.setId(id);
             booksDao.update(book);
         } catch (Exception e) {
@@ -83,7 +91,7 @@ public class BookServiceImpl implements BookService {
         }
     }
 
-    private Book toBook(int authorId, int genreId, String name, String desc, int[] genreIds) {
+    private Book toBook(int authorId, String name, String desc, int[] genreIds) {
         var author = Author.forParams(authorId);
         var genres = Arrays.stream(genreIds)
                 .mapToObj(id -> Genre.forParams(id))

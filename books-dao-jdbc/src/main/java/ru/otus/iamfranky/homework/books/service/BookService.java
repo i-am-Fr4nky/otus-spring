@@ -13,7 +13,6 @@ public interface BookService {
     Book get(int id) throws BookNotFoundException;
     void delete(int id);
 
-    Book add(int authorId, int genreId, String name, String desc, int[] genreIds);
-    void update(int id, int authorId, int genreId, String name, String desc, int[] genreIds);
-
+    Book add(int authorId, String name, String desc, int[] genreIds);
+    void update(int id, int authorId, String name, String desc, int[] genreIds);
 }

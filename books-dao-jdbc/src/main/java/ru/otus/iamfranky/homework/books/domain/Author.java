@@ -15,6 +15,4 @@ public class Author {
     public static Author forParams(int id) {
         return new Author(id, null, null, null);
     }
-
-
 }
