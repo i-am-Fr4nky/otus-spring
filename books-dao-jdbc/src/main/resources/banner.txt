@@ -1,0 +1,25 @@
+Spring shell!
+             ______
+          ,-'//__\\`-.
+        ,'  ${AnsiColor.BLUE}____${AnsiColor.DEFAULT}      `.      __________________
+       /   ${AnsiColor.BLUE}/ ,-.-.${AnsiColor.DEFAULT}      \    |  I am books app  |
+      (${AnsiColor.BLUE}/# /__`-'_| || || ${AnsiColor.DEFAULT})  <   working on JDBC |
+      |${AnsiColor.BLUE}|# []/()] O || || ${AnsiColor.DEFAULT}|   |__________________|
+    __`------------------'__
+   |--|${AnsiColor.BLUE} |<=={_______}=|| ${AnsiColor.DEFAULT}|--|
+   |  |${AnsiColor.BLUE} |-------------|| ${AnsiColor.DEFAULT}|  |
+   |  |${AnsiColor.BLUE} |={_______}==>|| ${AnsiColor.DEFAULT}|  |
+   |  |${AnsiColor.BLUE} |   |: _ :|   || ${AnsiColor.DEFAULT}|  |
+   > _|${AnsiColor.BLUE} |___|:===:|   || ${AnsiColor.DEFAULT}|__<
+   :| |${AnsiColor.BLUE} __| |: - :|   || ${AnsiColor.DEFAULT}| |:
+   :| |${AnsiColor.BLUE} ==| |: _ :|   || ${AnsiColor.DEFAULT}| |:
+   :| |${AnsiColor.BLUE} ==|_|:===:|___||_${AnsiColor.DEFAULT}| |:
+   :| |${AnsiColor.BLUE}___|_|:___:|___||_${AnsiColor.DEFAULT}| |:
+   :| |${AnsiColor.BLUE}||   ||/_\|| ||| -${AnsiColor.DEFAULT}| |:
+   ;I_|${AnsiColor.BLUE}||[]_||\_/|| ||| -${AnsiColor.DEFAULT}|_I;
+   |_ |__________________| _|
+   | `\\\___|____|____/_//' |
+   J : |     \____/     | : L
+  _|_: |      |__|      | :_|_
+-/ _-_.'    -/    \-    `.-_- \-
+/______\    /______\    /______\
